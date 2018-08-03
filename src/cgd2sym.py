@@ -6,6 +6,7 @@ This script transform cgd txt file to their symbolic represention
 """
 import re
 import sys
+import os
 
 DEFINED = ['char', 'int', 'float', 'double', 'wchar', 'wchar_t', 'unionType', 'uint32_t', 'uint8_t', 'size_t'
         'char*', 'int*', 'float*', 'double*', 'wchar*', 'wcahr_t*', 'unionType*', 'uint32_t*', 'uint8_t*', 'size_t*']
@@ -53,7 +54,7 @@ def get_variable(codes):
             if rex:
                 m = rex.group(0)
                 var_list.append(re.sub('[-,;)*\[]', '', m))
-            if v in DEFINED and '(' not in tokens[k+1]:
+            if v in DEFINED:
                 tmp = remove_empty(''.join(tokens[k+1:]).split(','))
                 for i in tmp:
                     if '=' in i:
@@ -78,13 +79,8 @@ def var2sym(var_list, codes):
 def remove_empty(l):
     return list(filter(None, l))
 
-
-
-if __name__ == '__main__':
-    file_name = sys.argv[1]
-    cgd_list = cgd_reader(file_name)
-    #vl = get_variable(l[0]['codes'])
-    #syml = var2sym(vl, l[0]['codes'])
+def cgd2sym(file_path, file):
+    cgd_list = cgd_reader(file_path + '/' + file)
     sym_list = []
     for cgd in cgd_list:
         codes = cgd['codes']
@@ -92,12 +88,17 @@ if __name__ == '__main__':
         symr = var2sym(vl, codes)
         cgd['symr'] = symr
         sym_list.append(cgd)
-    with open(file_name[:-4]+'_symr.txt', 'wt') as f:
+    with open(file[:-4]+'_symr.txt', 'wt') as f:
         for block in sym_list:
             f.write(block['name'] + '\n')
             for symr in block['symr']:
                 f.write(symr + '\n')
             f.write(block['res'] + '\n')
             f.write('\n')
-    print('Done')
 
+
+if __name__ == '__main__':
+    file_path = sys.argv[1]
+    file_list = os.listdir(file_path)
+    for file in file_list:
+        cgd2sym(file_path, file)
