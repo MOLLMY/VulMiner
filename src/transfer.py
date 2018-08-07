@@ -7,6 +7,7 @@ This file transform symbolic to vector
 
 import utils
 import re
+#from gensim import 
 
 
 class Transfer:
