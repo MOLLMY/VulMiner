@@ -2,7 +2,7 @@
 #coding: utf-8
 
 """
-This file provide the method for file load
+This file provide the method for file load, and transform them into code gadget
 """
 import re
 import os

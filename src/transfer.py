@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 #coding: utf-8
 
+"""
+This file transform symbolic to vector
+"""
+
 import utils
 import re
 
@@ -15,6 +19,9 @@ class Transfer:
         self._get_word_list()
 
     def _str_split(self):
+        """
+        split code into words
+        """
         for sym in self._sym_set:
             tmp = []
             tmp.append(sym[0])
@@ -23,6 +30,9 @@ class Transfer:
             self._sym_split_set.append(tmp)
 
     def _get_word_list(self):
+        """
+        collect all words
+        """
         for block in self._sym_split_set:
             for code in block[1]:
                 for word in code:
