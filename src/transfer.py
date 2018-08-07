@@ -18,14 +18,14 @@ class Transfer:
         for sym in self._sym_set:
             tmp = []
             tmp.append(sym[0])
-            tmp.append(utils.code_split(sym[1]))
+            tmp.append([utils.code_split(x) for x in sym[1]])
             tmp.append(sym[2])
             self._sym_split_set.append(tmp)
 
     def _get_word_list(self):
-        for i in self._sym_split_set:
-            for j in i[1]:
-                for k in j:
-                    if k not in self._word_list:
-                        self._word_list.append(k)
+        for block in self._sym_split_set:
+            for code in block[1]:
+                for word in code:
+                    if word not in self._word_list:
+                        self._word_list.append(word)
 
