@@ -73,15 +73,6 @@ class Preper:
         ded_var_list.sort(key=var_list.index)
         return ded_var_list
 
-    #def _var2sym(self, var_list, codes):
-    #    syml = codes[:]
-    #    for ind, var in enumerate(var_list):
-    #        tmp_syml = []
-    #        for k, v in enumerate(syml):
-    #            tmp_syml.append(v.replace(var, 'VAR'+str(ind)))
-    #        syml = tmp_syml[:]
-    #    return syml
-
     def _var2sym(self, var_list, codes):
         sym_list = []
         for i in codes:
