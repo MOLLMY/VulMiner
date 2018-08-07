@@ -15,8 +15,10 @@ class Transfer:
         self._sym_split_set = []
         self._vec_set = None
         self._word_list = []
+        self._word_record = []
+        self._word_curpos = []
         self._str_split()
-        self._get_word_list()
+        self._get_word_curpos()
 
     def _str_split(self):
         """
@@ -38,4 +40,20 @@ class Transfer:
                 for word in code:
                     if word not in self._word_list:
                         self._word_list.append(word)
+
+    def _get_word_curpos(self):
+        """
+        collect word curpos
+        """
+        for block in self._sym_split_set:
+            rec = []
+            rec_len = 0
+            rec.append(block[0])
+            for code in block[1]:
+                cl = list(filter(lambda x: x not in [None, '', ' '], code))
+                rec_len += len(cl)
+                self._word_curpos += cl
+            rec.append(rec_len)
+            rec.append(block[2])
+            self._word_record.append(rec)
 
