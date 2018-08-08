@@ -11,6 +11,7 @@ from loader import Loader
 from preper import Preper
 from transfer import Transfer
 from trainer import Trainer
+import numpy as np
 
 
 class Vulminer:
@@ -25,7 +26,8 @@ class Vulminer:
         """
         self._cgd_set = None # curpos for code gadget
         self._sym_set = None # curpos for symbolic representations
-        self._vec_set = None # curpos for vector representations
+        self._sentence_curpos = None # curpos for code sentence
+        self._vec_model = None # curpos for vector representations
 
     def load(self, file_path):
         """
@@ -46,6 +48,20 @@ class Vulminer:
         word2vec, transform symbolic to vector
         """
         transfer = Transfer(self._sym_set)
+        self._sentence_curpos = transfer._sentence_curpos
+        self._vec_model = transfer.model
+        ll = []
+        for i in transfer._sym_split_set:
+            l = 0
+            for j in i[1]:
+                l += len(j)
+            ll.append(l)
+        data = np.array(ll)
+        print("mean: ", np.mean(data))
+        print("median: ", np.median(data))
+        print("pre: ", np.percentile(data, 95))
+
+
 
     def train(self):
         """
@@ -60,10 +76,16 @@ class Vulminer:
         """
         pass
 
+def main():
+    pass
+
+
 if __name__ == '__main__':
-    vm = Vulminer()
-    vm.load(sys.argv[1])
-    vm.prep()
+    main()
+    #vm = Vulminer()
+    #vm.load(sys.argv[1])
+    #vm.prep()
+    #vm.trans()
     #with open('sym_list.txt', 'wt') as f:
     #    for i in vm._sym_set:
     #        f.write(i[0] + '\n')
@@ -78,6 +100,5 @@ if __name__ == '__main__':
     #            f.write(j + '\n')
     #        f.write(i[2] + '\n')
     #        f.write('\n')
-    vm.trans()
     #vm.train()
     #vm.test()
