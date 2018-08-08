@@ -46,9 +46,6 @@ class Vulminer:
         word2vec, transform symbolic to vector
         """
         transfer = Transfer(self._sym_set)
-        print(len(transfer._word_curpos))
-        print(len(transfer._word_record))
-        #self._vec_set = transfer.get_vec()
 
     def train(self):
         """

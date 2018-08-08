@@ -76,7 +76,7 @@ class Preper:
     def _var2sym(self, var_list, codes):
         sym_list = []
         for i in codes:
-            tok = utils.code_split(i)
+            tok = utils.word_split(i)
             for k, v in enumerate(tok):
                 if v in var_list:
                     tok[k] = "VAR" + str(var_list.index(v))
