@@ -7,8 +7,7 @@ This file transform symbolic to vector
 
 import utils
 import re
-#from gensim import 
-
+import gensim
 
 class Transfer:
     def __init__(self, sym_set):
@@ -18,8 +17,10 @@ class Transfer:
         self._word_list = []
         self._word_record = []
         self._word_curpos = []
+        self._sentence_curpos = []
         self._str_split()
-        self._get_word_curpos()
+        self._get_sentence_curpos()
+        self._word_to_vec()
 
     def _str_split(self):
         """
@@ -28,7 +29,7 @@ class Transfer:
         for sym in self._sym_set:
             tmp = []
             tmp.append(sym[0])
-            tmp.append([utils.code_split(x) for x in sym[1]])
+            tmp.append([list(filter(lambda x: x not in [None, '', ' '], utils.code_split(x)))for x in sym[1]])
             tmp.append(sym[2])
             self._sym_split_set.append(tmp)
 
@@ -58,3 +59,12 @@ class Transfer:
             rec.append(block[2])
             self._word_record.append(rec)
 
+    def _get_sentence_curpos(self):
+        for block in self._sym_split_set:
+            for code in block[1]:
+                self._sentence_curpos.append(code)
+
+    def _word_to_vec(self):
+        self.model = gensim.models.Word2Vec(self._sentence_curpos)
+        self.model.save('vul.model')
+        print(self.model[self._sentence_curpos[0]])
